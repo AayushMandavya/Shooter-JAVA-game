@@ -1,7 +1,8 @@
 package FirstGame;
 
 import java.awt.*;
-import javax.swing.ImageIcon;
+import javax.sound.sampled.Clip;
+import javax.swing.*;
 
 public class Player {
 
@@ -58,9 +59,11 @@ public class Player {
 
     //dead
     private boolean dead;
-
-    public Player(){
-
+    private JFrame frame;
+    private Clip clips;
+    public Player(JFrame window, Clip clip){
+        this.frame = window;
+        this.clips = clip;
         //Set initial Coordinates
         x = GamePanel.WIDTH/2;
         y = GamePanel.HEIGHT/2;
@@ -247,4 +250,12 @@ public void draw(Graphics2D g) {
         }
     }
 }
+
+    public void restart() {
+        this.frame.dispose();
+        this.clips.stop();
+        StartScreen ss = new StartScreen();
+        ss.startGame();
+
+    }
 }

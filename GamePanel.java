@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
@@ -44,10 +45,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     private boolean gameOver;
     private int highScore;
     private Image backgroundImage;
+    private JFrame frame;
+    private Clip clips;
 
     //Constructor
-    public GamePanel(Game game){
+    public GamePanel(Game game, JFrame window, Clip clip){
         super();
+        this.frame = window;
+        this.clips = clip;
         game = new Game();
 
         //background Color Set
@@ -104,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
 
         //Creating Player
-        player = new Player();
+        player = new Player(this.frame, this.clips);
 
         //Create Enemies
         enemies = new ArrayList<Enemy>();
@@ -568,9 +573,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
             //Over Display
             g.setFont(new Font("Century Gothic", Font.PLAIN, 30));
             String s="G A M E    O V E R";
+            String r = "PRESS 'R' to Restart";
             int length=(int)g.getFontMetrics().getStringBounds(s,g).getWidth();
             g.setColor(Color.WHITE);
             g.drawString(s, WIDTH/2-length/2,HEIGHT/2);
+            g.drawString(r, WIDTH/2-length/2,HEIGHT-200);
+
             //setters off
             player.setLeft(false);
             player.setRight(false);
@@ -578,12 +586,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
             player.setDown(false);
             player.setFiring(false);
             //Listener off
-            removeKeyListener(this);
+//            removeKeyListener(this);
         }
         g.setFont(new Font("Century Gothic", Font.BOLD, 12));
         g.setColor(Color.WHITE);
         g.drawString("HIGH SCORE: " + highScore, WIDTH - 110, 40);
     }
+
     public class HighScoreManager {
         private static final String HIGH_SCORE_FILE = "highscore.txt";
 
@@ -656,6 +665,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         if(keyCode == KeyEvent.VK_UP) player.setUp(true);
         if(keyCode == KeyEvent.VK_DOWN) player.setDown(true);
         if(keyCode == KeyEvent.VK_SPACE) player.setFiring(true);
+        if(keyCode == KeyEvent.VK_R) player.restart();
 
     }
 

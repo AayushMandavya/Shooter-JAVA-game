@@ -82,13 +82,15 @@ public class StartScreen extends JFrame {
         }
     }
 
-    private void startGame() {
+    public void startGame() {
+        this.dispose();
+        clip.stop();
         // Initialize your game object
         Game game = new Game();
         game.main();
 
         // Stop the background music when the game starts
-        clip.stop();
+
     }
 
     public static void main(String[] args) {

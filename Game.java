@@ -8,11 +8,12 @@ import java.io.File;
 public class Game {
     private static JFrame window;
     private static GamePanel gamePanel;
+    public Clip clip;
     public Game() {
     }
     public void main() {
         try {
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(new File("backgroundMusic.wav")));
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
@@ -29,7 +30,7 @@ public class Game {
         window = new JFrame("Shooting Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        gamePanel = new GamePanel(this);  // Pass the Game instance to the GamePanel
+        gamePanel = new GamePanel(this, window, clip);  // Pass the Game instance to the GamePanel
         window.setContentPane(gamePanel);
         window.setResizable(false);
         window.pack();
